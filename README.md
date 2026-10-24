@@ -30,16 +30,24 @@ GEMINI_API_KEY=your_key_here
 ```bash
 python agent.py
 ```
+4. Or launch the web interface:
+
+```bash
+streamlit run app.py
+```
+
+The page shows the agent's steps live while it searches and reads, then displays the final answer with sources.
 
 ## Tech stack
 
 - Python
 - Gemini API (`google-genai`)
 - DuckDuckGo search (`ddgs`)
+- Streamlit
 
 ## Roadmap
 
 - [x] Version 1: agent loop with a web search tool
 - [x] Version 2: tool to read full web pages
-- [ ] Version 3: Streamlit interface
+- [x] Version 3: Streamlit interface
 - [ ] Version 4: evaluation with test questions

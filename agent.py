@@ -1,10 +1,14 @@
 import json
+import time
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from google.genai import errors
 from ddgs import DDGS
 import requests
 from bs4 import BeautifulSoup
+import time
+from datetime import date
 
 load_dotenv()
 client = genai.Client()
@@ -13,9 +17,11 @@ MODEL = "gemini-3.5-flash-lite"
 MAX_STEPS = 5
 
 SYSTEM = (
+    f"Today's date is {date.today().isoformat()}. "
     "You are a research assistant. Use web_search to find sources. "
-    "Then use read_page to read the most promising link in full before answering. "
-    "Finish with a short answer and list the source URLs you used."
+    "Do at most 3 searches in total. Then use read_page on the most promising link. "
+    "After that, answer: a short answer followed by the source URLs you used. "
+    "If sources conflict, prefer the most recent one."
 )
 
 
@@ -50,17 +56,24 @@ config = types.GenerateContentConfig(
     tools=[web_search, read_page],
     automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
 )
+def ask_model(contents):
+    for attempt in range(4):
+        try:
+            return client.models.generate_content(
+                model=MODEL, contents=contents, config=config
+            )
+        except errors.ServerError as e:
+            wait = 2 ** (attempt + 1)
+            print(f"Model busy ({e.code}), retrying in {wait}s...")
+            time.sleep(wait)
+    raise RuntimeError("The model is still busy. Please try again in a minute.")
 
-
-def run_agent(question: str) -> str:
+def run_agent(question: str, on_step=None) -> str:
     contents = [types.Content(role="user", parts=[types.Part(text=question)])]
 
     for step in range(MAX_STEPS):
-        response = client.models.generate_content(
-            model=MODEL, contents=contents, config=config
-        )
-
-        # No tool requested -> the model is done
+        response = ask_model(contents)
+        
         if not response.function_calls:
             return response.text
 
@@ -71,7 +84,10 @@ def run_agent(question: str) -> str:
         parts = []
         for call in response.function_calls:
             
-                print(f"[step {step + 1}] {call.name}: {call.args}")
+                message = f"[step {step + 1}] {call.name}: {call.args}"
+                print(message)
+                if on_step:
+                    on_step(message)
                 result = TOOLS[call.name](**call.args)
                 parts.append(
                 types.Part.from_function_response(
