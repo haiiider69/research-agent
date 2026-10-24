@@ -1,3 +1,4 @@
+<img width="1908" height="957" alt="research agent" src="https://github.com/user-attachments/assets/1fe86283-a6ed-496a-ab35-ed869ae0f3f8" />
 # Research Agent
 
 A small AI agent that answers questions by searching the web, reading the results, and replying with sources. Built with Python and the Gemini API.
