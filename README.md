@@ -46,7 +46,7 @@ The page shows the agent's steps live while it searches and reads, then displays
 - DuckDuckGo search (`ddgs`)
 - Streamlit
 
-  <img width="1908" height="957" alt="research agent" src="https://github.com/user-attachments/assets/1fe86283-a6ed-496a-ab35-ed869ae0f3f8" />
+
 
 ## Roadmap
 
@@ -54,3 +54,7 @@ The page shows the agent's steps live while it searches and reads, then displays
 - [x] Version 2: tool to read full web pages
 - [x] Version 3: Streamlit interface
 - [ ] Version 4: evaluation with test questions
+
+
+## Interface
+  <img width="1908" height="957" alt="research agent" src="https://github.com/user-attachments/assets/1fe86283-a6ed-496a-ab35-ed869ae0f3f8" />
