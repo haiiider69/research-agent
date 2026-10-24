@@ -6,7 +6,7 @@ A small AI agent that answers questions by searching the web, reading the result
 
 1. You ask a question.
 2. The model decides whether it needs to search the web.
-3. If so, it asks for a search, my code runs it, and the results go back to the model.
+3. If so, it asks for a web search or to read a page in full, my code runs it, and the results go back to the model. If a tool fails, the error goes back to the model, which can try something else.
 4. This repeats (max 5 steps) until the model writes a final answer with source URLs.
 
 ## Setup
@@ -40,6 +40,6 @@ python agent.py
 ## Roadmap
 
 - [x] Version 1: agent loop with a web search tool
-- [ ] Version 2: tool to read full web pages
+- [x] Version 2: tool to read full web pages
 - [ ] Version 3: Streamlit interface
 - [ ] Version 4: evaluation with test questions
