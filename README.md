@@ -47,13 +47,29 @@ The page shows the agent's steps live while it searches and reads, then displays
 - Streamlit
 
 
+## Evaluation
+
+`evaluate.py` runs the agent on the 14 questions in `questions.json` and checks whether each answer contains an expected keyword.
+
+```bash
+python evaluate.py
+```
+
+**Latest clean run: 13/14 (93%).**
+
+Known limitations:
+- Small test set (14 questions) and simple keyword matching, so a wrong answer can pass and a correct one can fail.
+- Some questions (e.g. capital of Australia) can be answered from the model's memory without searching.
+- The free-tier Gemini model occasionally returns a malformed tool call, which can make a question fail. This is intermittent, and the agent retries before giving up.
+- A full run uses roughly 40-60 requests, so mind the free-tier quota.
+
 
 ## Roadmap
 
 - [x] Version 1: agent loop with a web search tool
 - [x] Version 2: tool to read full web pages
 - [x] Version 3: Streamlit interface
-- [ ] Version 4: evaluation with test questions
+- [x] Version 4: evaluation with test questions
 
 
 ## Interface

@@ -1,0 +1,16 @@
+[
+  {"question": "What is the capital of Australia?", "expected": "Canberra"},
+  {"question": "In which year did the Berlin Wall fall?", "expected": "1989"},
+  {"question": "Who wrote the novel Things Fall Apart?", "expected": "Achebe"},
+  {"question": "What is the tallest mountain in Africa?", "expected": "Kilimanjaro"},
+  {"question": "Who created the Python programming language?", "expected": "Guido"},
+  {"question": "Who won the 2024 Nobel Prize in Literature?", "expected": "Han Kang"},
+  {"question": "Who won the 2025 Nobel Prize in Literature?", "expected": "Krasznahorkai"},
+  {"question": "Which team won the 2025 UEFA Champions League final?", "expected": "Paris"},
+  {"question": "Who won the 2024 Ballon d'Or?", "expected": "Rodri"},
+  {"question": "Who won the 2025 Ballon d'Or?", "expected": "Demb"},
+  {"question": "Which company originally created the Rust programming language?", "expected": "Mozilla"},
+  {"question": "What does RAG stand for in the context of LLMs?", "expected": "Retrieval"},
+  {"question": "Who is the first author of the paper 'Attention Is All You Need'?", "expected": "Vaswani"},
+  {"question": "Which planet in our solar system has the most known moons?", "expected": "Saturn"}
+]
