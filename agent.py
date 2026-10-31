@@ -1,4 +1,5 @@
 import json
+import re
 import time
 from dotenv import load_dotenv
 from google import genai
@@ -93,14 +94,17 @@ def ask_model(contents, cfg=None):
             raise
         if response.function_calls or response.text:
             return response
-        reason = response.candidates[0].finish_reason if response.candidates else "no candidates"
-        print(f"   [empty reply, finish reason: {reason}]")
+        
+        cand = response.candidates[0] if response.candidates else None
+        reason = cand.finish_reason if cand else "no candidates"
+        detail = getattr(cand, "finish_message", None) if cand else None
+        print(f"   [empty reply, finish reason: {reason}] {detail or ''}")
         if attempt >= 1:
             print("   [switching to answering without tools]")
             use_cfg = final_config
     raise RuntimeError("The model is busy or keeps returning empty replies. Try again in a minute.")
 
-def run_agent(question: str, on_step=None) -> str:
+def run_agent(question: str, on_step=None, trace=None) -> str:
     contents = [types.Content(role="user", parts=[types.Part(text=question)])]
 
     for step in range(MAX_STEPS):
@@ -129,7 +133,9 @@ def run_agent(question: str, on_step=None) -> str:
                     good = [q for q in args.pop("queries")if isinstance(q, str) and q.strip()]
                     args["query"] = good[0] if good else ""
                 result = TOOLS[call.name](**args)
-                print(f"   -> {str(result)[:150]}")
+                if trace is not None:
+                    trace.setdefault("tools", []).append(call.name)
+                    trace.setdefault("urls", set()).update(re.findall(r'https?://[^\s"<>\\]+', str(result)))
 
                 parts.append(
                 types.Part.from_function_response(

@@ -1,0 +1,9 @@
+[
+  {"question": "Which country won the 2026 FIFA World Cup?", "expected": "Spain"},
+  {"question": "Who scored the winning goal in the 2026 FIFA World Cup final?", "expected": "Torres"},
+  {"question": "Who won the 2026 Nobel Prize in Physics?", "expected": "Halzen"},
+  {"question": "Who won the 2026 Nobel Prize in Literature?", "expected": "Carson"},
+  {"question": "Who won the 2026 Nobel Peace Prize?", "expected": "Pillay"},
+  {"question": "Which chemists won the 2026 Nobel Prize in Chemistry?", "expected": "Kagan"},
+  {"question": "Who shared the 2026 Nobel Prize in Physiology or Medicine for work on optogenetics?", "expected": "Deisseroth"}
+]

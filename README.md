@@ -49,19 +49,35 @@ The page shows the agent's steps live while it searches and reads, then displays
 
 ## Evaluation
 
-`evaluate.py` runs the agent on the 14 questions in `questions.json` and checks whether each answer contains an expected keyword.
+`evaluate.py` runs the agent on a questions file and scores each answer.
 
 ```bash
-python evaluate.py
+python evaluate.py                      # easy set (questions.json)
+python evaluate.py questions_web.json   # harder set, needs the web
+python evaluate.py questions_web.json 1 # only the first question
 ```
 
-**Latest clean run: 13/14 (93%).**
+Each question on the harder set gets three checks:
+
+1. **Correct**: the answer contains the expected keyword.
+2. **Used the web**: the agent ran at least one tool.
+3. **Sources valid**: the answer cites at least one URL, and every cited URL appeared in a tool result (no invented links).
+
+A question counts toward the score only if it passes all three.
+
+| Set | Result |
+|-----|--------|
+| `questions.json` (14 easy questions, answer check only) | 13/14 (93%) |
+| `questions_web.json` (7 questions about 2026 events, three checks) | 3/7 (43%) full pass |
+
+Reading the harder result: the 4 failures were not wrong answers. In each one the free-tier model kept returning a malformed tool call and the agent gave up before searching. The 3 questions that got through passed all three checks. A single run is a small sample, and results vary between runs.
 
 Known limitations:
-- Small test set (14 questions) and simple keyword matching, so a wrong answer can pass and a correct one can fail.
-- Some questions (e.g. capital of Australia) can be answered from the model's memory without searching.
-- The free-tier Gemini model occasionally returns a malformed tool call, which can make a question fail. This is intermittent, and the agent retries before giving up.
-- A full run uses roughly 40-60 requests, so mind the free-tier quota.
+- Small test sets and simple keyword matching, so a wrong answer can pass and a correct one can fail.
+- The "sources valid" check shows the agent did not invent a URL; it does not prove the page supports the claim.
+- The free-tier Gemini model intermittently returns `MALFORMED_FUNCTION_CALL`. The agent retries, but the cause is not yet understood.
+- The fallback that answers without tools after repeated malformed calls did not help in the one run where it was triggered.
+- A full run uses a noticeable share of the free-tier daily quota.
 
 
 ## Roadmap
